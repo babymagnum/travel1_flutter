@@ -41,6 +41,7 @@ dependencies:
   firebase_core:
   firebase_messaging:
   flutter_local_notifications:
+  flutter_screenutil:
   flutter:
     sdk: flutter
 

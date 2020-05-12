@@ -1,6 +1,5 @@
-import 'package:dribbble_clone/core/theme/theme_color.dart';
-import 'package:dribbble_clone/core/theme/theme_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
   CustomTextField({
@@ -12,7 +11,11 @@ class CustomTextField extends StatelessWidget {
     @required this.textInputAction,
     @required this.isMasked,
     this.textEditingController,
-    this.isObsecure
+    this.isObsecure,
+    this.textStyle,
+    this.hintTextStyle,
+    this.fillColor,
+    this.borderRadius
   });
 
   final bool isObsecure;
@@ -24,6 +27,10 @@ class CustomTextField extends StatelessWidget {
   final FocusNode focusNode;
   final TextInputAction textInputAction;
   final TextEditingController textEditingController;
+  final TextStyle textStyle;
+  final TextStyle hintTextStyle;
+  final Color fillColor;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +42,20 @@ class CustomTextField extends StatelessWidget {
       keyboardType: inputType,
       maxLines: inputType == TextInputType.multiline ? null : 1,
       textInputAction: textInputAction,
-      style: ThemeTextStyle.ubuntuRegular.apply(fontSizeDelta: -2),
+      style: textStyle,
       obscureText: isObsecure != null ? true : false,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: fillColor,
         hintText: hintText,
-        hintStyle: ThemeTextStyle.ubuntuRegular
-          .apply(fontSizeDelta: -2, color: ThemeColor.lightGrey1),
+        hintStyle: hintTextStyle,
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: ThemeColor.green,
-            width: 1,
-          ),
+          borderSide: BorderSide(color: fillColor, width: 1,),
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black12, width: 1),
+          borderSide: BorderSide(color: fillColor, width: 1,),
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
       ),
