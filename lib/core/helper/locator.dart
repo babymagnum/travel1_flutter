@@ -1,5 +1,6 @@
 import 'package:dribbble_clone/stores/base_stores/base_stores.dart';
 import 'package:get_it/get_it.dart';
+import '../../view/travel/stores/travel_stores.dart';
 
 GetIt locator = GetIt.I;
 
@@ -16,4 +17,5 @@ void setupLocator() {
   * */
 
   locator.registerLazySingleton<BaseStores>(() => BaseStores());
+  locator.registerLazySingleton<TravelStores>(() => TravelStores());
 }

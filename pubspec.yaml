@@ -22,21 +22,17 @@ dependencies:
   flutter_masked_text:
   dio:
   shimmer:
-  connectivity:
   shared_preferences:
   json_annotation:
   google_maps_flutter:
   location:
   intl:
-  flutter_staggered_grid_view:
   cached_network_image:
   get_it:
   mobx:
-  charts_flutter:
   flutter_mobx:
   url_launcher:
   image_picker:
-  share:
   division:
   firebase_core:
   firebase_messaging:
@@ -52,7 +48,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^1.0.0
   json_serializable: ^2.0.0
-  mobx_codegen:
+  mobx_codegen: ^0.3.9
   flutter_launcher_icons: "^0.7.3"
   flutter_test:
     sdk: flutter

@@ -11,6 +11,9 @@ abstract class BaseStoresBase with Store {
   @observable
   bool isLoading = true;
 
+  @observable
+  bool isLoading2 = true;
+
   @action
   testAction(bool value) {
     isLoading = value;

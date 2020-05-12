@@ -26,6 +26,23 @@ mixin _$BaseStores on BaseStoresBase, Store {
     }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
   }
 
+  final _$isLoading2Atom = Atom(name: 'BaseStoresBase.isLoading2');
+
+  @override
+  bool get isLoading2 {
+    _$isLoading2Atom.context.enforceReadPolicy(_$isLoading2Atom);
+    _$isLoading2Atom.reportObserved();
+    return super.isLoading2;
+  }
+
+  @override
+  set isLoading2(bool value) {
+    _$isLoading2Atom.context.conditionallyRunInAction(() {
+      super.isLoading2 = value;
+      _$isLoading2Atom.reportChanged();
+    }, _$isLoading2Atom, name: '${_$isLoading2Atom.name}_set');
+  }
+
   final _$BaseStoresBaseActionController =
       ActionController(name: 'BaseStoresBase');
 

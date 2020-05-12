@@ -1,6 +1,7 @@
 import 'package:division/division.dart';
 import 'package:dribbble_clone/core/theme/theme_text_style.dart';
 import 'package:dribbble_clone/core/widgets/custom_text_field.dart';
+import 'package:dribbble_clone/view/home/home_view.dart';
 import 'package:dribbble_clone/view/reset_password/reset_password_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,7 +40,7 @@ class _SigninViewState extends State<SigninView> {
                 focusNode: _passwordFocus,),
               SizedBox(height: 43.h,),
               Parent(
-                gesture: Gestures()..onTap(() {}),
+                gesture: Gestures()..onTap(() => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomeView()))),
                 style: ParentStyle()..ripple(true)..borderRadius(all: 5)..boxShadow(color: Colors.black.withOpacity(0.16), offset: Offset(1, 3), blur: 15)
                   ..background.color(Color(0xFF6200EE))..padding(vertical: 11.h)..width(size.width),
                 child: Text('SIGN IN', textAlign: TextAlign.center, style: ThemeTextStyle.openSansBold.apply(color: Colors.white, fontSizeDelta: 20.ssp),),
