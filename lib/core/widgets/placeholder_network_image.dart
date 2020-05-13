@@ -5,7 +5,7 @@ import 'package:shimmer/shimmer.dart';
 
 class PlaceholderNetworkImage extends StatelessWidget {
 
-  PlaceholderNetworkImage({Key key, this.url, this.size, this.borderRadius}): super (key: key);
+  PlaceholderNetworkImage({Key key, @required this.url, @required this.size, @required this.borderRadius}): super (key: key);
 
   final String url;
   final Size size;
