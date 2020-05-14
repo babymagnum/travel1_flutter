@@ -19,11 +19,13 @@ class TravelView extends StatefulWidget {
 
 class _TravelViewState extends State<TravelView> {
 
+  double _pagerHeight = 0;
+  var _isPagerSetHeight = false;
   var _selectedPager = 0;
   var _travelStores = GetIt.I.get<TravelStores>();
   var _listPagerData = [
     TravelViewPagerModel('https://assets.anantara.com/image/upload/q_auto,f_auto/media/minor/anantara/images/anantara-uluwatu-bali-resort/the-resort/anantara_uluwatu_exterior_944x510.jpg?h=510&w=944&la=en', 'Indonesia', 'Bali Tanah Dewata Asri', ['https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg'], 5),
-    TravelViewPagerModel('https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg', 'Thailand', 'Phuket Skidipapap Swadikap', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.3),
+    TravelViewPagerModel('https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg', 'Thailand', 'Phuket Skidipapap', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.3),
     TravelViewPagerModel('https://res-1.cloudinary.com/enchanting/f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-pagoda-of-Tran-Quoc-temple-in-Hanoi-Vietnam.jpg', 'Vietnam', 'Hanoi Cimol Aloy Alibaba Wushian', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.2),
     TravelViewPagerModel('https://static.asiawebdirect.com/m/kl/portals/kuala-lumpur-ws/homepage/pagePropertiesOgImage/kuala-lumpur.jpg.jpg', 'Malaysia', 'Kuala Lumpur Malaysia', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 3.8),
   ];
@@ -225,21 +227,16 @@ class _TravelViewState extends State<TravelView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 40.h + MediaQuery.of(context).padding.top,),
-              MeasureSize(
-                onChange: (Size size) {
-                  print('enjoy life height ${size.height}');
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.h),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text('Enjoy your life with us!', style: ThemeTextStyle.openSansBold.apply(fontSizeDelta: 20.ssp, color: Color(0xFF24253D)),)
-                      ),
-                      SizedBox(width: 10.h,),
-                      Image.asset('assets/images/ic_search.png', height: 17.h, width: 17.h, color: Color(0xFF24253D),)
-                    ],
-                  ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.h),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text('Enjoy your life with us!', style: ThemeTextStyle.openSansBold.apply(fontSizeDelta: 20.ssp, color: Color(0xFF24253D)),)
+                    ),
+                    SizedBox(width: 10.h,),
+                    Image.asset('assets/images/ic_search.png', height: 17.h, width: 17.h, color: Color(0xFF24253D),)
+                  ],
                 ),
               ),
               SizedBox(height: 20.h,),
@@ -251,10 +248,89 @@ class _TravelViewState extends State<TravelView> {
               ),
               SizedBox(height: 35.h,),
               Container(
-                height: 205, width: size.width,
-                child: PageView(
-                  onPageChanged: (value) => setState(() => _selectedPager = value),
-                  children: listPager(size),
+                height: _pagerHeight + 5, width: size.width,
+                child: PageView.builder(
+                  onPageChanged: (value) {
+                    setState(() {
+                      _selectedPager = value;
+                      _isPagerSetHeight = true;
+                    });
+                  },
+                  itemCount: _listPagerData.length,
+                  itemBuilder: (context, i) => Parent(
+                    style: ParentStyle()..margin(horizontal: 29, bottom: 5)..background.color(Colors.white)..boxShadow(color: Colors.black.withOpacity(0.08), offset: Offset(1, 3), blur: 6)..borderRadius(all: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MeasureSize(
+                          onChange: (Size size) {
+                            if (i == 0 && !_isPagerSetHeight) setState(() => _pagerHeight += size.height);
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              width: size.width, height: 170.h,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(_listPagerData[i].image)
+                                )
+                              ),
+                            ),
+                          ),
+                        ),
+                        MeasureSize(
+                          onChange: (Size size) {
+                            if (i == 0 && !_isPagerSetHeight) setState(() => _pagerHeight += size.height);
+                          },
+                          child: SizedBox(height: 14.h,)
+                        ),
+                        MeasureSize(
+                          onChange: (Size size) {
+                            if (i == 0 && !_isPagerSetHeight) setState(() => _pagerHeight += size.height);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 17),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(_listPagerData[i].name, maxLines: 1, overflow: TextOverflow.ellipsis, style: ThemeTextStyle.openSansBold.apply(fontSizeDelta: 14.ssp, color: Colors.black),)
+                                          ),
+                                          SizedBox(width: 10.h,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: listStar(_listPagerData[i].star.toInt()),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      Text(_listPagerData[i].country, style: ThemeTextStyle.openSansSemiBold.apply(fontSizeDelta: 9.ssp, color: Color(0xFF707070).withOpacity(0.53)),)
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 10.h,),
+                                Stack(
+                                  children: listPeople(_listPagerData[i].peoples),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        MeasureSize(
+                          onChange: (Size size) {
+                            if (i == 0 && !_isPagerSetHeight) setState(() => _pagerHeight += size.height);
+                          },
+                          child: SizedBox(height: 14.h,)
+                        ),
+                      ],
+                    ),
+                  )
                 ),
               ),
               SizedBox(height: 17.h,),
