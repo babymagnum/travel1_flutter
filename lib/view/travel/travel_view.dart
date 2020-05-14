@@ -1,9 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:division/division.dart';
 import 'package:dribbble_clone/core/theme/dimens.dart';
-import 'package:dribbble_clone/core/theme/theme_color.dart';
 import 'package:dribbble_clone/core/theme/theme_text_style.dart';
 import 'package:dribbble_clone/core/widgets/measure_size.dart';
+import 'package:dribbble_clone/core/widgets/page_indicator.dart';
 import 'package:dribbble_clone/core/widgets/placeholder_network_image.dart';
 import 'package:dribbble_clone/model/travel_view_pager_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shimmer/shimmer.dart';
 import 'stores/travel_stores.dart';
 
 class TravelView extends StatefulWidget {
@@ -21,8 +19,14 @@ class TravelView extends StatefulWidget {
 
 class _TravelViewState extends State<TravelView> {
 
-  double _pagerHeight = 0;
+  var _selectedPager = 0;
   var _travelStores = GetIt.I.get<TravelStores>();
+  var _listPagerData = [
+    TravelViewPagerModel('https://assets.anantara.com/image/upload/q_auto,f_auto/media/minor/anantara/images/anantara-uluwatu-bali-resort/the-resort/anantara_uluwatu_exterior_944x510.jpg?h=510&w=944&la=en', 'Indonesia', 'Bali Tanah Dewata Asri', ['https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg'], 5),
+    TravelViewPagerModel('https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg', 'Thailand', 'Phuket Skidipapap Swadikap', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.3),
+    TravelViewPagerModel('https://res-1.cloudinary.com/enchanting/f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-pagoda-of-Tran-Quoc-temple-in-Hanoi-Vietnam.jpg', 'Vietnam', 'Hanoi Cimol Aloy Alibaba Wushian', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.2),
+    TravelViewPagerModel('https://static.asiawebdirect.com/m/kl/portals/kuala-lumpur-ws/homepage/pagePropertiesOgImage/kuala-lumpur.jpg.jpg', 'Malaysia', 'Kuala Lumpur Malaysia', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 3.8),
+  ];
 
   List<Widget> listStar(int size) {
     List<Widget> listWidget = List();
@@ -35,10 +39,12 @@ class _TravelViewState extends State<TravelView> {
   List<Widget> listPeople(List<String> listPeople) {
     List<Widget> listWidget = List();
     for (int i=0; i<listPeople.length; i++) {
-      if (i == 3) {
+      if (i == 4) {
+        break;
+      } else if (i == 3) {
         listWidget.add(
           Container(
-            margin: EdgeInsets.only(left: 12.5 * i),
+            margin: EdgeInsets.only(left: 11.5 * i),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -74,12 +80,10 @@ class _TravelViewState extends State<TravelView> {
             ),
           )
         );
-      } else if (i == 4) {
-        break;
       } else {
         listWidget.add(
           Container(
-            margin: EdgeInsets.only(left: 12.5 * i),
+            margin: EdgeInsets.only(left: 11.5 * i),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -106,14 +110,8 @@ class _TravelViewState extends State<TravelView> {
   }
 
   List<Widget> listPager(Size size) {
-    var listData = [
-      TravelViewPagerModel('https://assets.anantara.com/image/upload/q_auto,f_auto/media/minor/anantara/images/anantara-uluwatu-bali-resort/the-resort/anantara_uluwatu_exterior_944x510.jpg?h=510&w=944&la=en', 'Indonesia', 'Bali', ['https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg', 'https://themes.themewaves.com/nuzi/wp-content/uploads/sites/4/2013/05/Team-Member-3.jpg'], 5),
-      TravelViewPagerModel('https://www.telegraph.co.uk/content/dam/Travel/Destinations/Asia/Thailand/Phuket/phuket-thailand-beach-boat-lead-main-guide.jpg', 'Thailand', 'Phuket', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.3),
-      TravelViewPagerModel('https://res-1.cloudinary.com/enchanting/f_auto/et-web/2015/05/Enchanting-Travels-Vietnam-Tours-pagoda-of-Tran-Quoc-temple-in-Hanoi-Vietnam.jpg', 'Vietnam', 'Hanoi', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 4.2),
-      TravelViewPagerModel('https://static.asiawebdirect.com/m/kl/portals/kuala-lumpur-ws/homepage/pagePropertiesOgImage/kuala-lumpur.jpg.jpg', 'Malaysia', 'Kuala Lumpur', ['https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/140120_Minho_Lee_c.jpg/220px-140120_Minho_Lee_c.jpg'], 3.8),
-    ];
     List<Widget> listWidget = List();
-    for (int i=0; i<listData.length; i++) {
+    for (int i=0; i<_listPagerData.length; i++) {
       listWidget.add(
         Parent(
           style: ParentStyle()..margin(horizontal: 29, bottom: 5)..background.color(Colors.white)..boxShadow(color: Colors.black.withOpacity(0.08), offset: Offset(1, 3), blur: 6)..borderRadius(all: 10),
@@ -127,7 +125,7 @@ class _TravelViewState extends State<TravelView> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(listData[i].image)
+                      image: NetworkImage(_listPagerData[i].image)
                     )
                   ),
                 ),
@@ -143,21 +141,24 @@ class _TravelViewState extends State<TravelView> {
                         children: [
                           Row(
                             children: [
-                              Text(listData[i].name, maxLines: 1, overflow: TextOverflow.ellipsis, style: ThemeTextStyle.openSansBold.apply(fontSizeDelta: 14.ssp, color: Colors.black),),
+                              Flexible(
+                                child: Text(_listPagerData[i].name, maxLines: 1, overflow: TextOverflow.ellipsis, style: ThemeTextStyle.openSansBold.apply(fontSizeDelta: 14.ssp, color: Colors.black),)
+                              ),
                               SizedBox(width: 10.h,),
                               Row(
-                                children: listStar(listData[i].star.toInt()),
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: listStar(_listPagerData[i].star.toInt()),
                               )
                             ],
                           ),
-                          SizedBox(height: 2.h,),
-                          Text(listData[i].country, style: ThemeTextStyle.openSansSemiBold.apply(fontSizeDelta: 9.ssp, color: Color(0xFF707070).withOpacity(0.53)),)
+                          SizedBox(height: 2.h),
+                          Text(_listPagerData[i].country, style: ThemeTextStyle.openSansSemiBold.apply(fontSizeDelta: 9.ssp, color: Color(0xFF707070).withOpacity(0.53)),)
                         ],
-                      )
+                      ),
                     ),
                     SizedBox(width: 10.h,),
                     Stack(
-                      children: listPeople(listData[i].peoples),
+                      children: listPeople(_listPagerData[i].peoples),
                     ),
                   ],
                 ),
@@ -190,6 +191,22 @@ class _TravelViewState extends State<TravelView> {
           ),
           child: Text(listData[i], style: ThemeTextStyle.poppinsMedium.apply(color: i == _travelStores.indexRegion ? Colors.white : Colors.black, fontSizeDelta: 12.ssp),),
         ),
+      ));
+    }
+
+    return listWidget;
+  }
+
+  List<Widget> pageIndicators() {
+    List<Widget> listWidget = List();
+
+    for(int i=0; i<_listPagerData.length; i++) {
+      listWidget.add(PageIndicator(
+        height: 5,
+        isSelected: _selectedPager == i,
+        color: _selectedPager == i ? Color(0xFF6200EE) : Color(0xFF707070),
+        isFirst: i == 0,
+        isLast: i == _listPagerData.length -1,
       ));
     }
 
@@ -232,16 +249,20 @@ class _TravelViewState extends State<TravelView> {
                   children: listRegion(),
                 ),
               ),
-              SizedBox(height: 55.h,),
+              SizedBox(height: 35.h,),
               Container(
                 height: 205, width: size.width,
                 child: PageView(
-                  onPageChanged: (value) {},
+                  onPageChanged: (value) => setState(() => _selectedPager = value),
                   children: listPager(size),
                 ),
               ),
-              SizedBox(height: 31.h,),
-              Text('Top Cities')
+              SizedBox(height: 17.h,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: pageIndicators(),
+              ),
             ],
           ),
         ),
